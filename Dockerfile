@@ -5,15 +5,14 @@ FROM mcr.microsoft.com/playwright:v1.49.0-noble
 # Set working directory
 WORKDIR /app
 
-# Set non-interactive debian frontend and Node environment
+# Set non-interactive debian frontend
 ENV DEBIAN_FRONTEND=noninteractive
-ENV NODE_ENV=production
 ENV PORT=7860
 
 # Copy dependency manifests
-COPY package.json ./
+COPY package.json package-lock.json* ./
 
-# Install npm dependencies
+# Install dependencies (including devDependencies required for Vite build and tsx runtime)
 RUN npm install
 
 # Copy application source code
@@ -21,6 +20,9 @@ COPY . .
 
 # Build production frontend assets to /app/dist
 RUN npm run build
+
+# Set production environment
+ENV NODE_ENV=production
 
 # Ensure persistent uploads directory
 RUN mkdir -p uploads

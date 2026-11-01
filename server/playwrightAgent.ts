@@ -228,7 +228,12 @@ export async function runLegacyPortalAgent(
     const port = process.env.PORT || 3001;
     browser = await chromium.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
     });
     const context: BrowserContext = await browser.newContext({
       viewport: { width: 1280, height: 900 },
@@ -714,7 +719,12 @@ export async function runLiveGovDiscoveryAgent(
     // Launch Chromium for live portal inspection
     browser = await chromium.launch({
       headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+      ],
     });
     const context = await browser.newContext({
       viewport: { width: 1280, height: 900 },
