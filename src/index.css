@@ -1,0 +1,256 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-paper: #F6F4EE;
+  --bg-ledger: #EBE7DF;
+  --bg-ledger-light: #F0ECE4;
+  --ink: #141413;
+  --ink-muted: #57554E;
+  --ink-light: #8E8A7F;
+  --ink-hairline: #141413;
+  --ochre: #D94E1F;
+  --ochre-bg: #FBECE8;
+  --ochre-hairline: #C03E12;
+  --stamp-green: #1B5E20;
+  --stamp-green-bg: #EAF3EB;
+  --stamp-green-hairline: #134517;
+
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  background-color: var(--bg-paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Monospace Utilities */
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+/* Archival Borders & Hairlines */
+.border-ink {
+  border-color: var(--ink);
+}
+
+.border-hairline {
+  border: 1px solid var(--ink);
+}
+
+.border-hairline-t {
+  border-top: 1px solid var(--ink);
+}
+
+.border-hairline-b {
+  border-bottom: 1px solid var(--ink);
+}
+
+.border-hairline-l {
+  border-left: 1px solid var(--ink);
+}
+
+.border-hairline-r {
+  border-right: 1px solid var(--ink);
+}
+
+.border-double-ink {
+  border: 3px double var(--ink);
+}
+
+/* Stamp Verification Badges */
+.stamp-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+}
+
+.stamp-verified {
+  color: var(--stamp-green);
+  background-color: var(--stamp-green-bg);
+  border-color: var(--stamp-green);
+}
+
+.stamp-alert {
+  color: var(--ochre);
+  background-color: var(--ochre-bg);
+  border-color: var(--ochre);
+}
+
+.stamp-neutral {
+  color: var(--ink);
+  background-color: var(--bg-ledger);
+  border-color: var(--ink);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-paper);
+  border-left: 1px solid #D8D4CA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ochre);
+}
+
+/* Crosshair Target Reticle */
+.reticle-box {
+  position: relative;
+}
+
+.reticle-box::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--ochre);
+  border-left: 2px solid var(--ochre);
+  pointer-events: none;
+}
+
+.reticle-box::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--ochre);
+  border-right: 2px solid var(--ochre);
+  pointer-events: none;
+}
+
+/* Button & Interactive styles */
+.desk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.5rem 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border: 1px solid var(--ink);
+  background-color: var(--bg-paper);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background-color 0.12s ease, color 0.12s ease, transform 0.05s ease;
+}
+
+.desk-btn:hover:not(:disabled) {
+  background-color: var(--ink);
+  color: var(--bg-paper);
+}
+
+.desk-btn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.desk-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.desk-btn-primary {
+  background-color: var(--ink);
+  color: var(--bg-paper);
+}
+
+.desk-btn-primary:hover:not(:disabled) {
+  background-color: var(--ochre);
+  color: #FFFFFF;
+  border-color: var(--ochre);
+}
+
+.desk-btn-ochre {
+  background-color: var(--ochre);
+  color: #FFFFFF;
+  border-color: var(--ochre);
+}
+
+.desk-btn-ochre:hover:not(:disabled) {
+  background-color: var(--ochre-hairline);
+  border-color: var(--ochre-hairline);
+}
+
+/* Form Inputs */
+.desk-input {
+  width: 100%;
+  padding: 0.42rem 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink);
+  background-color: #FFFFFF;
+  border: 1px solid var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.desk-input:focus {
+  border-color: var(--ochre);
+  box-shadow: 0 0 0 1px var(--ochre);
+}
+
+/* Print Styles for Gazette Receipt */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .receipt-printable {
+    border: 3px double #000000 !important;
+    padding: 2rem !important;
+    margin: 1rem !important;
+    page-break-inside: avoid;
+  }
+}

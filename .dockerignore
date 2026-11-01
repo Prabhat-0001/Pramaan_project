@@ -1,0 +1,11 @@
+node_modules
+dist
+dist-server
+uploads/*
+!uploads/.gitkeep
+.git
+.gitignore
+.env
+.env.local
+scratch
+*.log
