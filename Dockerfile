@@ -1,6 +1,6 @@
 # PRAMAAN // Autonomous Public Service & Bureaucracy Execution Desk
 # Base image: Official Microsoft Playwright with Chromium & system dependencies pre-installed
-FROM mcr.microsoft.com/playwright:v1.49.0-noble
+FROM mcr.microsoft.com/playwright:v1.64.1-noble
 
 # Set working directory
 WORKDIR /app
@@ -14,6 +14,9 @@ COPY package.json package-lock.json* ./
 
 # Install dependencies (including devDependencies required for Vite build and tsx runtime)
 RUN npm install
+
+# Ensure Playwright Chromium binary is installed and matched to the exact version
+RUN npx playwright install chromium
 
 # Copy application source code
 COPY . .
