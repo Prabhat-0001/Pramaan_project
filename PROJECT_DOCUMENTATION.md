@@ -202,3 +202,33 @@ Government portals deliberately deploy dynamic canvas CAPTCHAs to block automate
 
 ### Q3: "How is PRAMAAN different from a standard RPA (Robotic Process Automation) script?"
 **Answer:** Traditional RPA scripts (like UiPath or Selenium scripts) are rigid: if a date is formatted wrong or a file is 2KB too large, the script crashes. PRAMAAN is **agentic and self-healing**: it detects DOM validation rejections, diagnoses the root cause (e.g. Rule 4.2 file size ceiling), invokes image processing pipelines on the fly, resolves cascading dependencies, and collaborates with human operators via HITL interrupts.
+
+---
+
+## 6. Complete Deployment & Production Run Guide
+
+Anyone can deploy PRAMAAN in under 3 minutes across bare-metal, containers, and cloud platforms:
+
+### 1. Bare-Metal Local Machine (Windows / macOS / Linux)
+```bash
+git clone https://github.com/your-org/pramaan.git
+cd pramaan
+npm install
+npx playwright install chromium
+cp .env.example .env  # Add your GEMINI_API_KEY
+npm run dev           # Hot-reload mode on http://localhost:5173
+# OR
+npm run build && npm start  # Production unified server on http://localhost:3001
+```
+
+### 2. 1-Click Docker Container (Official Playwright Image)
+```bash
+docker build -t pramaan .
+docker run -d -p 7860:7860 -e GEMINI_API_KEY="your-gemini-api-key" pramaan
+```
+Open `http://localhost:7860` in any web browser.
+
+### 3. Cloud Platforms (Render, Railway, Hugging Face Spaces)
+- **Railway & Render:** Connect your GitHub repo, select Docker environment, provide `GEMINI_API_KEY` in environment variables, and click Deploy.
+- **Hugging Face Spaces:** Create a Space with the **Docker SDK**, add `GEMINI_API_KEY` to Secrets, and push this repository. Port 7860 is exposed by default.
+

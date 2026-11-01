@@ -169,18 +169,106 @@ npx tsx scratch/testFullFlow.ts
 
 ---
 
-## 🐳 Docker Production Deployment
+## 🌐 Complete Deployment Guide
 
-PRAMAAN is fully containerized using the official Microsoft Playwright Ubuntu Noble image:
+PRAMAAN is designed so **anyone can deploy it in under 3 minutes** across multiple environments:
+
+### Option A: Local Bare-Metal (Windows / macOS / Linux)
 
 ```bash
-# Build the Docker image
+# 1. Clone repository
+git clone https://github.com/your-org/pramaan.git
+cd pramaan
+
+# 2. Install dependencies & Playwright Chromium
+npm install
+npx playwright install chromium
+
+# 3. Configure .env file
+cp .env.example .env
+# Edit .env and paste your GEMINI_API_KEY
+
+# 4. Run Development (Vite + Express hot-reload)
+npm run dev
+
+# 5. OR Run Production Full-Stack (Single Port 3001)
+npm run build
+npm start
+```
+- Development UI: `http://localhost:5173`
+- Production Full-Stack: `http://localhost:3001`
+
+---
+
+### Option B: 1-Click Docker Container (Recommended for Cloud & Evaluators)
+
+PRAMAAN includes a production-ready [`Dockerfile`](./Dockerfile) based on the official Microsoft Playwright image (`mcr.microsoft.com/playwright:v1.49.0-noble`), containing all Linux Chromium graphics drivers and system libraries pre-installed.
+
+```bash
+# 1. Build the Docker image
 docker build -t pramaan .
 
-# Run the container (maps to port 7860 default)
-docker run -p 7860:7860 -e GEMINI_API_KEY="your-gemini-api-key" pramaan
+# 2. Run the container (maps to port 7860 or 3001)
+docker run -d \
+  --name pramaan-app \
+  -p 7860:7860 \
+  -e GEMINI_API_KEY="your-gemini-api-key-here" \
+  pramaan
 ```
-Open `http://localhost:7860` to access the full-stack desk.
+Open **`http://localhost:7860`** in your browser. The single container serves the React frontend, Express API backend, Playwright Chromium engine, and the Legacy NIC Portal Digital Twin.
+
+---
+
+### Option C: Cloud Deployment (Render, Railway, Hugging Face)
+
+#### 1. Deploying to Railway / Render (Docker Service)
+1. Fork or push this repository to your GitHub account.
+2. In **Render** or **Railway**, click **New +** $\rightarrow$ **Web Service**.
+3. Select your repository.
+4. Set **Environment** to **Docker** (Railway and Render will automatically detect the root `Dockerfile`).
+5. Under **Environment Variables**, add:
+   - `GEMINI_API_KEY` = `your-actual-api-key`
+   - `PORT` = `7860` (or leave default)
+6. Click **Deploy**. The platform will build the container, compile frontend assets, and launch the service with a public HTTPS URL.
+
+#### 2. Deploying to Hugging Face Spaces (Docker)
+1. Create a new Space on [huggingface.co/new-space](https://huggingface.co/new-space).
+2. Set Space SDK to **Docker** (Blank template).
+3. Push this repository to your Hugging Face Space repository.
+4. Under **Settings $\rightarrow$ Variables and secrets**, add a secret:
+   - Name: `GEMINI_API_KEY`
+   - Value: `your-api-key`
+5. The container exposes port `7860` natively and will boot directly into the PRAMAAN Operator Desk!
+
+#### 3. Deploying to an Ubuntu / Debian Linux VPS (EC2 / DigitalOcean)
+```bash
+# Update packages & install Node.js 20+
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs git
+
+# Clone repo & install
+git clone https://github.com/your-org/pramaan.git
+cd pramaan
+npm install
+
+# Install Playwright system dependencies & Chromium
+npx playwright install --with-deps chromium
+
+# Build production assets & start with PM2
+npm run build
+sudo npm install -g pm2
+pm2 start "npm start" --name pramaan
+```
+
+---
+
+### ⚙️ Production Environment Variables Reference
+
+| Variable | Required | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `GEMINI_API_KEY` | **Recommended** | *(None)* | Google AI Studio API Key. Enables live Gemini 3.8 Flash Vision OCR, Pre-Flight Compliance Audit, and Search Grounding. If omitted, the desk uses embedded sovereign heuristic fallbacks. |
+| `PORT` | Optional | `3001` (local) / `7860` (Docker) | HTTP port for the Express backend and unified static SPA server. |
+| `NODE_ENV` | Optional | `production` | Set to `production` when serving compiled assets from `dist/`. |
 
 ---
 
